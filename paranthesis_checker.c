@@ -5,12 +5,12 @@ char stack[max];
 int i,top=-1;
 void push(char);
 char pop();
-void display();
+
 void main()
 {
     char expression[max], temp;
     int count = 1;
-    display();
+    
     printf("Enter the expression\n");
     scanf("%s", expression);
     int a=strlen(expression);
@@ -79,16 +79,4 @@ char pop(){
         return (stack[top--]);
     }
 }
- void display()
-{
-        if(top==-1)
-        {
-                printf("No elements in stack\n");
-        }
-        else {
-                for(i=0;i<max;i++)
-                {
-                        printf("%d",stack[i]);
-                }
-        }
-}
+ 
