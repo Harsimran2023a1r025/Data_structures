@@ -3,20 +3,23 @@
 #include <ctype.h>
 #define max 100
 char stack[max];
+char infix[100], postfix[100];
 int top = -1;
+ char val;//assigning character value as empty so it can hold stack characters
 void push(char stack[], char);
 char pop(char stack[]);
 void infixtopostfix(char source[], char target[]); // source is given expression and target is the postfix
 int getpriority(char);                             // to check the presedence of operators
 int main()
 {
-    char infix[100], postfix[100];
+    
     printf("Enter the infix expression\n");
-    scanf("%s", &infix);
+    scanf("%s", infix);
     strcpy(postfix, "");            // to make postfix string empty all 100 positions
     infixtopostfix(infix, postfix); // calling the function
     printf("\nthe postfix expression is\n");
     printf("%s", postfix);
+    return 0;
 }
 void infixtopostfix(char source[], char target[])
 {
@@ -31,15 +34,15 @@ void infixtopostfix(char source[], char target[])
             i++;
         }
 
-        else if (isdigit(source[i]) || isalpha(source[i]))
+        else if ((isdigit(source[i])) || (isalpha(source[i])))
         {
             target[j] = source[i]; // according to algorithm if we fing digit or alpha add it to the postfix target is the postfix here
             j++;
             i++;
         }
-        else if (source[i] == '+' || source[i] == '-' || source[i] == '*' || source[i] == '/' || source[i] == '%') // to check the operators
+        else if ((source[i] == '+') || (source[i] == '-') || (source[i] == '*') || (source[i] == '/') || (source[i] == '%')) // to check the operators
         {
-            while ((top != -1) && (stack[top] != '(') && (getpriority(stack[top]) > getpriority(source[i]))) // to check the presedence of operators
+            while ((top != -1) && (stack[top] != '(') && (getpriority(stack[top]) >= getpriority(source[i]))) // to check the presedence of operators
             {         //if any of the condition is false it push that character to stack else it will pop                                                                                       // if stack operator has greater presednec than reading pop it from stack and add to the postfix expression
                 target[j] = pop(stack);
                 j++;
@@ -49,7 +52,7 @@ void infixtopostfix(char source[], char target[])
         }
         else if (source[i] == ')')
         {
-            while ((top != -1) && (stack[top] == '(')) // runs until top become -1 or until it get the open brace as per the algorithm
+            while ((top != -1) && (stack[top] != '(')) // runs until top become -1 or until it get the open brace as per the algorithm
             {
                 target[j] = pop(stack); // the element which delete stores in target string
                 j++;
@@ -68,13 +71,14 @@ void infixtopostfix(char source[], char target[])
             
         }
        
-        while ((top != -1) && (stack[top] != '('))//if their are any other elements inn stack not followed by the uper conditions then it follows that
+        
+    }
+    while ((top != -1) && (stack[top] != '('))//if their are any other elements inn stack not followed by the uper conditions then it follows that
         {
             target[j] =pop(stack);
             j++;
         }
         target[j] = '\0';
-    }
 }
 int getpriority(char o)//to check the presedence of operators
 {
@@ -100,7 +104,7 @@ void push(char stack[],char val)//to push the elements
 }
 char pop(char stack[])//to delete the elemets
 {
-    char val=' ';//assigning character value as empty so it can hold stack characters
+   
     if(top==-1)
     {
         printf("UNder flow");
@@ -109,4 +113,5 @@ char pop(char stack[])//to delete the elemets
         val=stack[top];
         top--;
     }
+    return val;
 }
