@@ -6,28 +6,28 @@ int queue[MAX_SIZE];
 int front = -1, rear = -1;
 
 void enqueue(int value) {
-    if ((rear + 1) % MAX_SIZE == front) {
+    if ((rear + 1) % MAX_SIZE == front) {//circular incrementing condition it checks last index pos to front if that is true ie overflow 
         printf("Queue is full\n");
     } else {
         if (front == -1) {
-            front = 0;
+            front = 0;//here we make front and rear=0 as in circular increment condition never gives -1 so we've to make them as zero
             rear = 0;
         } else {
-            rear = (rear + 1) % MAX_SIZE;
+            rear = (rear + 1) % MAX_SIZE;//circular incrementing
         }
-        queue[rear] = value;
+        queue[rear] = value;//adding value to every index pos
         printf("%d enqueued to the queue\n", value);
     }
 }
 
 void dequeue() {
-    if (front == -1) {
+    if (front == -1) {//underflow condition
         printf("Queue is empty\n");
     } else {
         printf("%d dequeued from the queue\n", queue[front]);
-        if (front == rear) {
+        if (front == rear) {//it means queue is full elements are present for dequeue
             front = -1;
-            rear = -1;
+            rear = -1;//
         } else {
             front = (front + 1) % MAX_SIZE;
         }
@@ -40,9 +40,9 @@ void display() {
     } else {
         int i = front;
         printf("Queue elements: ");
-        while (i != rear) {
+        while (i != rear) {//while front not equals to zero as they coincid ein circular queue
             printf("%d ", queue[i]);
-            i = (i + 1) % MAX_SIZE;
+            i = (i + 1) % MAX_SIZE;//circularly incrementing
         }
         printf("%d\n", queue[rear]);  // Display the last element separately
     }
