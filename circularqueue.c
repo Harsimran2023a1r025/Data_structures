@@ -24,12 +24,12 @@ void dequeue() {
     if (front == -1) {//underflow condition
         printf("Queue is empty\n");
     } else {
-        printf("%d dequeued from the queue\n", queue[front]);
-        if (front == rear) {//it means queue is full elements are present for dequeue
+        printf("%d dequeued from the queue\n", queue[front]);//as in enqueue front becomes 0 so it deque elemnt at index pos 0 first
+        if (front == rear) {
             front = -1;
-            rear = -1;//
+            rear = -1;//they become -1 when queue is empty after deqing all elements
         } else {
-            front = (front + 1) % MAX_SIZE;
+            front = (front + 1) % MAX_SIZE;//it increment after every dequeue is called
         }
     }
 }
