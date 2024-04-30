@@ -1,0 +1,110 @@
+#include <stdio.h>
+
+#define MAX_SIZE 100
+
+int queue[MAX_SIZE];
+int front = -1;
+int rear = -1;
+
+void enqueue(int value) {
+    if (rear == MAX_SIZE - 1) {
+        printf("Queue is full.\n");//overflow condition
+        return;
+    }
+    if (front == -1) {//incremneting front as their is no elelment in index pos -1 so make it as 0
+        front = 0;
+    }
+    rear++;
+    queue[rear] = value;
+}
+
+void dequeueMin() {
+    if (front == -1) {
+        printf("Queue is empty.\n");//underflow condition
+        return;
+    }
+    int minIndex = front;//taking 0 index pos value to minindex
+    for (int i = front + 1; i <= rear; i++) {//iterating loop from first index pos to last
+        if (queue[i] < queue[minIndex]) {//this condition finds the smalles ele in queue
+            minIndex = i;
+        }
+    }
+    printf("Dequeued min element: %d\n", queue[minIndex]);//print the smallest elel that dequeued
+    for (int i = minIndex; i < rear; i++) {//here we not choose front we go with min index from that index pos to last pos
+        queue[i] = queue[i + 1];//shifting the ele to left as to remove the smallest element from queue
+    }
+    rear--;//decreasing the size of queue by 1
+    if (rear == -1) {//in last when queue gets empty makes tha front value again as -1
+        front = -1;
+    }
+}
+
+void dequeueMax() {
+    if (front == -1) {
+        printf("Queue is empty.\n");
+        return;
+    }
+    int maxIndex = front;//front index pos value to maxindex
+    for (int i = front + 1; i <= rear; i++) {
+        if (queue[i] > queue[maxIndex]) {//finds the greatest element 
+            maxIndex = i;
+        }
+    }
+    printf("Dequeued max element: %d\n", queue[maxIndex]);//print that greatest element to dequed
+    for (int i = maxIndex; i < rear; i++) {//from that index pos to last
+        queue[i] = queue[i + 1];//again shifting elements to right
+    }
+    rear--;//decrementing the size of queue
+    if (rear == -1) {
+        front = -1;
+    }
+}
+
+void displayQueue() {
+    if (front == -1) {
+        printf("Queue is empty.\n");
+        return;
+    }
+    printf("Queue elements: ");
+    for (int i = front; i <= rear; i++) {//from front end to last end
+        printf("%d ", queue[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    int choice, value;
+    do {
+        printf("1. Enqueue\n");
+        printf("2. Dequeue Min\n");
+        printf("3. Dequeue Max\n");
+        printf("4. Display Queue\n");
+        printf("0. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter value to enqueue: ");
+                scanf("%d", &value);
+                enqueue(value);
+                break;
+            case 2:
+                dequeueMin();
+                break;
+            case 3:
+                dequeueMax();
+                break;
+            case 4:
+                displayQueue();
+                break;
+            case 0:
+                printf("Exiting.\n");
+                break;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    } while (choice != 0);
+
+    return 0;
+}
