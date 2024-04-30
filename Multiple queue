@@ -1,0 +1,152 @@
+#include<stdio.h>
+#define max 10
+int enqueueA(int);//int argument is taken as we've to add integer value to array
+int dequeueA();
+int display_queue();
+int enqueueB(int);
+int dequeueB();
+int display_queueB();
+int Q[max],frontA=-1,rearA=-1/*for first queue*/,frontB=max,rearB=max;//for 2nd queue
+int enqueueA(int val)//for first queue left to right approach
+{
+    if(rearA==rearB-1)//as rearb =max this condition is overflow condition
+    {
+        printf("Overflow");
+    }
+    else{
+        if((rearA==-1) && (frontA==-1))//this conditon work unit rear ahnd front are -1 after incrementing it surpasses to else condition 
+        {
+            rearA=frontA=0;//as they're -1 to make them to index pos 0 we use this
+            Q[++rearA]=val;//incrementing index pos
+        }
+        else
+        {
+            Q[++rearA]=val;
+        }
+    }
+}
+int dequeueA()
+{
+    int val;
+    if(frontA==-1)//if front is -1 ie besides 0 index pos it means queue is empty
+    {
+        printf("Underflow");
+        return -1;
+    }
+    else{
+        val=Q[frontA];///forntA move to 0 index pos
+        frontA++;
+        if(frontA>rearA)//this condition is always fail as front never surpass rear
+        {
+            rearA=frontA=-1;
+        }
+        return val;
+    }
+}
+int dispaly_queueA()
+{
+    int i;
+    if(frontA==-1)//before the 0th index pos means no0 element in array
+    {
+        printf("Underflow");
+    }
+    else{
+        for(i=frontA+1;i<=rearA;i++)//as front+1 as it is less than index pos by 1 end moves it print arry form front to rear not from 0 to rear
+        {
+            printf("%d\n ",Q[i]);
+        }
+    }
+}
+int enqueueB(int val)//for 2nd queue right to left approach
+{
+    if(rearA=rearB-1)//as reverse to previous case its max pos is rearB so rearB-1 means array is full
+    {
+        printf("Overflow");
+    }
+    else{
+        if((rearB==max) && (frontB==max)) //whenver it reaches to max-1 index pos it surpass to else condition
+        {
+            rearA=frontA=max-1;//to make them to max to max-1 pos as it is arr which stores index pos -1 of size
+            Q[--rearB]=val;//as it is right to left so we're decrementing it
+        }
+        else
+        {
+            Q[--rearA]=val;
+        }
+    }
+}
+int dequeueB()//for 2nd queue
+{
+    int val;
+    if(frontB==max-1)//as it is right to left max-1 is for underflow
+    {
+        printf("Underflow");
+        return -1;
+    }
+    else{
+        val=Q[frontB];//frontB moves to last index pos
+        frontA--;//and then decremnet as it is reverse
+        if(frontB>rearB)//this condition is always fail as front never surpass rear
+        {
+            rearB=frontB=-1;
+        }
+        return val;
+    }
+}
+int dispaly_queueB()
+{
+    int i;
+    if(frontB==max)//for underflow
+    {
+        printf("Underflow");
+    }
+    else{
+        for(i=frontB+1;i>=rearB;i--)//from front+1 is due to it is less than index position end to rear end and greater than sign is due to right to left approach 
+        {
+            printf("%d\n ",Q[i]);
+        }
+    }
+}
+int main()
+{
+    int ch,val,i;
+    do{
+        printf("1.enqueueA\n2.enqueueB\n3.dequeueA\n4.dequeueB\n5.displayA\n6.displayB\n");
+        printf("Enter your choice\n");
+        scanf("%d",&ch);
+        switch(ch)
+        {
+            case 1:
+            printf("Enter the value to insert in enqueueA");
+            scanf("%d",&val);
+            enqueueA(val);
+            break;
+            case 2:
+            printf("Enter the value to insert in enqueueB");
+            scanf("%d",&val);
+            enqueueB(val);
+            break;
+            case 3:
+            printf("Enter the value to insert in dequeueA");
+            scanf("%d",&val);
+            dequeueA(val);
+            break;
+            case 4:
+            printf("Enter the value to insert in dequeueB");
+            scanf("%d",&val);
+            dequeueB(val);
+            break;
+            case 5:
+            printf("The element in queueA are");
+            dispaly_queueA();
+            break;
+            case 6:
+            printf("The element in queueB are");
+            dispaly_queueB();
+            break;
+        }    
+        
+    }
+    while(ch!=7);
+    return 0;
+}
