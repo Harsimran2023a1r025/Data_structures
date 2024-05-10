@@ -4,7 +4,7 @@
 // Define the structure for a node
 struct Node {
     int data;
-    struct Node* next;
+    struct Node* next;//stores next variable in struct node datatype
 };
 
 // Function to create a new node
