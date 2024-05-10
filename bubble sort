@@ -1,0 +1,33 @@
+#include<stdio.h>
+int main()
+{
+    int n,i,t;
+    printf("ENter the size of array\n");
+    scanf("%d",&n);
+    int a[n];
+    for(i=0;i<n;i++)
+    {
+        printf("Enter the %d index pos element\n",i+1);
+        scanf("%d",&a[i]);//3 2 1 0
+    }
+    int j;
+    for(i=0;i<n-1;i++)//this loop is for no. of iterations 
+    {
+    for(j=0;j<n-i-1;j++)//this loop is for comparison between elments and n-i-1 is due to after every iteration we don't want to compare the last element that is swapped
+    {//in first iteration 2 1 0 3 in second iteration we don't want to compare 3 so it gets 1 0 2 3 in next iteration we don't want to compare 3 and 2 so we get 0 1 2 3  
+        if(a[j]>a[j+1])
+        {
+            t=a[j];
+            a[j]=a[j+1];
+            a[j+1]=t;
+        }
+        
+    }
+}
+printf("After sorting\n");
+for(i=0;i<n;i++)
+{
+    printf("%d\t",a[i]);//for printing the sorted array
+}
+return 0;
+}
