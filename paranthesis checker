@@ -1,0 +1,78 @@
+#include<stdio.h>
+#include<string.h>
+#define max 100
+int stack[max],top=-1,i,temp;
+void push(char);
+char pop();
+int main()
+{
+    char exp[max],c=1;
+        printf("Enter the expression: ");
+        scanf("%s",&exp);
+    int a=strlen(exp);
+    for(i=0;i<a;i++)
+    {
+        if(exp[i]=='('||exp[i]=='{'||exp[i]=='[')//checking for open braces whenever we find open brace push it in stack
+        {
+            push(exp[i]);
+        }
+        else if(exp[i]==')'||exp[i]=='}'||exp[i]==']'){
+            if(top==-1)//if stack is empty count is 0
+            {
+                c=0;
+            }
+            else{
+            
+            temp=pop();//transfer pop elements to temp only pop if braces are same 
+            if(exp[i]==')'&& temp!='(')//if closing brace did'nt match with open count is zero
+            {
+                c=0;
+            }
+            else if(exp[i]=='}'&& temp!='{')
+            {
+                c=0;
+            }
+            else if(exp[i]==']'&& temp!='[')
+            {
+                c=0;
+            }
+           
+            }
+
+        }
+    } 
+    if(top>=0)
+    {
+        c=0;
+    }  
+    if(c==1)
+    {
+        printf("valid expression\n");
+
+    }
+    else{
+        printf("invalid expression\n");
+    }                
+}
+void push(char c)
+{
+    if (top==max-1)
+    {
+        printf("Overflow");
+
+    }
+    else{
+        top++;
+        stack[top]=c;
+    }
+}
+char pop()
+{
+    if(top==-1)
+    {
+        printf("Underflow");
+    }
+    else{
+        return stack[top--];
+    }
+}
