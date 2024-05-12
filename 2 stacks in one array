@@ -1,0 +1,163 @@
+#include <stdio.h>
+#define max 10
+int stack[max], topA = -1, topB = max, i, n, c; // as topA=-1 due to regular r to l approach  but  topB=max as push B follows l to r approach so its emptiness is determinrd by max value
+void push1();
+void push2();
+void pop1();
+void pop2();
+int display();
+int display_stack1();
+int display_stack2();
+int display_stack2()
+{
+    for (i = topB; i < max; i++)
+    {
+        printf("%d\n", stack[i]);
+    }
+}
+int display_stack1()
+{
+    for (i = topA; i >= 0; i--)
+    {
+        printf("%d\n", stack[i]);
+    }
+}
+void push1() // right to left approach
+{
+    if (topA == max / 2 - 1) // array is divide in 2 parts
+    {
+        printf("Overflow\n");
+        return;
+    }
+    else
+    {
+        while (topA < max / 2 - 1)
+        {
+            topA = topA + 1;
+            printf("Enter the elemnt to pushed at %d index position \n", topA);
+            scanf("%d", &n);
+            stack[topA] = n;
+        }
+    }
+}
+void push2() // left to right approach
+{
+    if (topB == max / 2) // if our arr size is 6 half is 3 if topB=3 it means half array is full as it follows l to r approach
+    {
+        printf("Overflow\n");
+    }
+    else
+    {
+        while (topB > max / 2) // as whenever it reaches to mid it stops
+        {
+            topB = topB - 1; // we're decrementing as l to r approach follows reverse condition as compared to simple one
+            printf("Enter the element at %d index pos\n", topB);
+            scanf("%d", &n);
+            stack[topB] = n;
+        }
+    }
+}
+void pop1() // r to l
+{
+    if (topA == -1)
+    {
+        printf("Underflow");
+    }
+    else
+    {
+        printf("Enter the number of ele to deleted \n");
+        scanf("%d", &c);
+        if (c > max / 2)
+        {
+            printf("Not enough ele to delet\n");
+        }
+        else
+        {
+            topA = topA - c;
+        }
+    }
+}
+void pop2() // l to r
+{
+    if (topB == max) // equal to max because in this l to r approach follows top==-1 is same for topB=max in this
+    {
+        printf("Underfloe\n");
+    }
+    else
+    {
+        printf("Enter the number of ele to deleted \n");
+        scanf("%d", &c);
+        if (c > max / 2)
+        {
+            printf("Not enough ele to delet\n");
+        }
+        else
+        {
+            topB = topB + c; // it is reverse so we increment and display the array form that top position
+        }
+    }
+}
+int display()
+{
+    if (topA == -1 && topB == max)
+    {
+        printf("Under flow");
+    }
+    else
+    {
+        printf("Array elements are \n");
+        for (i = 0; i < max; i++)
+        {
+            if (i <= topA) // merging the divided arrays for display
+            {
+                printf("%d\t", stack[i]);
+            }
+            else if (i >= topB)
+            {
+                printf("%d\t", stack[i]);
+            }
+        }
+    }
+}
+int main()
+{
+
+    int choice, val;
+    while (1)
+    {
+
+        printf("1.pushA\n2.pushB\n3.popA\n4,popB\n5.display1\n6.display2\n7.display array\n8.exit");
+        scanf("%d", &choice);
+        switch (choice)
+        {
+        case 1:
+
+            push1();
+            break;
+        case 2:
+
+            push2();
+            break;
+        case 3:
+            pop1();
+            break;
+        case 4:
+            pop2();
+            break;
+        case 5:
+            display_stack1();
+            break;
+        case 6:
+            display_stack2();
+            break;
+        case 7:
+            display();
+            break;
+        case 8:
+            printf("Exited");
+            break;
+        default:
+            printf("Invalid choice\n");
+        }
+    }
+}
