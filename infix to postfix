@@ -1,0 +1,102 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+
+#define MAX_SIZE 100
+
+char stack[MAX_SIZE];
+int top = -1;
+
+void push(char c)
+{
+    if (top == MAX_SIZE - 1)
+    {
+        printf("Stack Overflow\n");
+        exit(EXIT_FAILURE);
+    }
+    stack[++top] = c;
+}
+
+char pop()
+{
+    if (top == -1)
+    {
+        printf("Stack Underflow\n");
+        exit(EXIT_FAILURE);
+    }
+    return stack[top--];
+}
+
+int precedence(char c)
+{
+    switch (c)
+    {
+    case '+':
+    case '-':
+        return 1;
+    case '*':
+    case '/':
+        return 2;
+    case '^':
+        return 3;
+    default:
+        return 0;
+    }
+}
+
+void infixToPostfix(char infix[])
+{
+    char postfix[MAX_SIZE];
+    int i = 0, j = 0;
+
+    while (infix[i] != '\0')
+    { // till the infix expression gets empty and all the operator and operands move to postfix
+        if (isalnum(infix[i]))
+        { // if number or char move that to the postfix
+            postfix[j++] = infix[i++];
+        }
+        else if (infix[i] == '(')
+        { // If the character is an opening parenthesis '(', it is pushed onto the stack.
+            push(infix[i++]);
+        }
+        else if (infix[i] == ')')
+        { // if find close brace
+            while (stack[top] != '(')
+            {                         // till we reach open brace
+                postfix[j++] = pop(); // pop the characters and store in the postfix expression
+            }
+            pop(); // Discard the '('opening brace then
+            i++;
+        }
+        else
+        {
+            while (top != -1 && precedence(infix[i]) <= precedence(stack[top]))
+            { // If the character is an operator (+, -, *, /, ^), it compares its
+                // precedence with the operator at the top of the stack. If the current operator has lower or equal precedence,
+                //  it pops and adds operators from the stack to the postfix expression until the stack is empty or
+                // an operator with lower precedence is encountered.
+                postfix[j++] = pop();
+            }
+            push(infix[i++]); // Then it pushes the current operator onto the stack.
+        }
+    }
+
+    while (top != -1)
+    {
+        postfix[j++] = pop(); // push the other remaining characters to the postfix expression
+    }
+    postfix[j] = '\0';
+
+    printf("Postfix expression: %s\n", postfix);
+}
+
+int main()
+{
+    char infix[MAX_SIZE];
+
+    printf("Enter infix expression: ");
+    scanf("%s", infix);
+    infixToPostfix(infix);
+
+    return 0;
+}
