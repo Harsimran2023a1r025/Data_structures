@@ -1,82 +1,137 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-#define MAX_SIZE 5
+// Structure of a node
+struct Node {
+    int data;
+    struct Node *next;
+};
 
-int queue[MAX_SIZE];
-int front = -1, rear = -1;
+// Function to insert a new node at the beginning of the list
+struct Node *insertBegin(struct Node *last, int data) {
+    struct Node *new_node = (struct Node *)malloc(sizeof(struct Node));
+    new_node->data = data;
 
-void enqueue(int value) {
-    if ((rear + 1) % MAX_SIZE == front) {//circular incrementing condition it checks last index pos to front if that is true ie overflow 
-        printf("Queue is full\n");
+    if (last == NULL) {
+        new_node->next = new_node; // For the first node, point next to itself
+        last = new_node; // Update the last pointer
     } else {
-        if (front == -1) {
-            front = 0;//here we make front and rear=0 as in circular increment condition never gives -1 so we've to make them as zero
-            rear = 0;
-        } else {
-            rear = (rear + 1) % MAX_SIZE;//circular incrementing
-        }
-        queue[rear] = value;//adding value to every index pos
-        printf("%d enqueued to the queue\n", value);
+        new_node->next = last->next; // Point new node to the next of last
+        last->next = new_node; // Point last to new node
     }
+
+    return last;
 }
 
-void dequeue() {
-    if (front == -1) {//underflow condition
-        printf("Queue is empty\n");
-    } else {
-        printf("%d dequeued from the queue\n", queue[front]);//as in enqueue front becomes 0 so it deque elemnt at index pos 0 first
-        if (front == rear) {
-            front = -1;
-            rear = -1;//they become -1 when queue is empty after deqing all elements
-        } else {
-            front = (front + 1) % MAX_SIZE;//it increment after every dequeue is called
-        }
+// Function to delete a node with a given key
+struct Node *deleteNode(struct Node *last, int key) {
+    if (last == NULL) return NULL;
+
+    struct Node *curr = last->next;
+    struct Node *prev = last;
+
+    // If the list has only one node
+    if (curr == last && curr->data == key) {
+        free(curr);
+        return NULL;
     }
+
+    // Traverse the list to find the node to be deleted
+    do {
+        if (curr->data == key) {
+            prev->next = curr->next;
+            if (curr == last) last = prev; // If the last node is to be deleted, update last
+            free(curr);
+            break;
+        }
+        prev = curr;
+        curr = curr->next;
+    } while (curr != last->next);
+
+    return last;
 }
 
-void display() {
-    if (front == -1) {
-        printf("Queue is empty\n");
-    } else {
-        int i = front;
-        printf("Queue elements: ");
-        while (i != rear) {//while front not equals to zero as they coincid ein circular queue
-            printf("%d ", queue[i]);
-            i = (i + 1) % MAX_SIZE;//circularly incrementing
-        }
-        printf("%d\n", queue[rear]);  // Display the last element separately
+// Function to perform linear search
+void linearSearch(struct Node *last, int key) {
+    if (last == NULL) {
+        printf("List is empty\n");
+        return;
     }
+
+    struct Node *curr = last->next;
+    int found = 0;
+    int position = 1;
+
+    // Traverse the list to find the key
+    do {
+        if (curr->data == key) {
+            printf("Element %d found at position %d\n", key, position);
+            found = 1;
+            break;
+        }
+        curr = curr->next;
+        position++;
+    } while (curr != last->next);
+
+    if (!found) printf("Element %d not found in the list\n", key);
+}
+
+// Function to display the circular linked list
+void displayList(struct Node *last) {
+    if (last == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+
+    struct Node *temp = last->next;
+
+    do {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    } while (temp != last->next);
+    printf("\n");
 }
 
 int main() {
-    int choice, value;
+    struct Node *last = NULL;
+    int choice, data, key;
+
     do {
-        printf("\n1. Enqueue\n");
-        printf("2. Dequeue\n");
-        printf("3. Display\n");
-        printf("4. Exit\n");
+        printf("\n1. Insert\n");
+        printf("2. Delete\n");
+        printf("3. Search\n");
+        printf("4. Display\n");
+        printf("5. Exit\n");
         printf("Enter your choice: ");
         scanf("%d", &choice);
 
         switch (choice) {
             case 1:
-                printf("Enter the element to enqueue: ");
-                scanf("%d", &value);
-                enqueue(value);
+                printf("Enter the element to insert: ");
+                scanf("%d", &data);
+                last = insertBegin(last, data);
                 break;
             case 2:
-                dequeue();
+                printf("Enter the element to delete: ");
+                scanf("%d", &key);
+                last = deleteNode(last, key);
                 break;
             case 3:
-                display();
+                printf("Enter the element to search: ");
+                scanf("%d", &key);
+                linearSearch(last, key);
                 break;
             case 4:
-                printf("Exiting program\n");
+                printf("The list is: ");
+                displayList(last);
+                break;
+            case 5:
+                printf("Exiting...\n");
                 break;
             default:
-                printf("Invalid choice\n");
+                printf("Invalid choice. Please enter a valid option.\n");
         }
-    } while (choice != 4);
+    } while (choice != 5);
 
     return 0;
 }
