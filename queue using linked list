@@ -1,0 +1,103 @@
+#include<stdio.h>   
+#include<stdlib.h>  
+struct node   
+{  
+    int data;   
+    struct node *next;  
+};  
+struct node *front;//declaring front variable in node 
+struct node *rear;//declaring rear value in node   
+void insert();  
+void delete();  
+void display();  
+void main ()  
+{  
+    int choice;   
+    while(choice != 4)   
+    {     
+        printf("\n1.enqueue\n2.dequeue\n3.Display the queue\n4.Exit\n");  
+        printf("\nEnter your choice ?");  
+        scanf("%d",& choice);  
+        switch(choice)  
+        {  
+            case 1:  
+            insert();  
+            break;  
+            case 2:  
+            delete();  
+            break;  
+            case 3:  
+            display();  
+            break;  
+            case 4:  
+            exit(0);  
+            break;  
+            default:   
+            printf("\nEnter valid choice??\n");  
+        }  
+    }  
+}  
+void insert()//enqueue  
+{  
+    struct node *ptr; //declaring the pointer variable in a node
+    int item;  //vale to enqueue  
+      
+    ptr = (struct node *) malloc (sizeof(struct node)); //initialising the size of a node 
+    if(ptr == NULL)//if the ptr variables coincides with null it means the list is full
+    {  
+        printf("\nOVERFLOW\n");  
+        return;  
+    }  
+    else  
+    {   
+        printf("\nEnter value?\n");  
+        scanf("%d",&item);  
+        ptr -> data = item;//the item by the user given stored in the data in in ptr variable 
+        //for the first node
+        if(front == NULL)  //if front==null means starting from the firsdt node 
+        {  
+            front = ptr; //ptr stors in frnt 
+            rear = ptr;  //means making the first elemnt as rear and front and then after every enque the rear will increment 
+            front -> next = NULL; //then mking next node connected with null   
+            rear -> next = NULL;  
+        }  
+        else   
+        {  
+            rear -> next = ptr;  //for the other nodes to insert after the first one 
+            rear = ptr;  //ptr in rear 
+            rear->next = NULL;//then incrementing rear and link to them will null  
+        }  
+    }  
+}     
+void delete ()  
+{  
+    struct node *ptr;  //calling the struct dt as enque elements are stored in queue 
+    if(front == NULL)  //if null coincides front it means queue nis empty
+    {  
+        printf("\nUNDERFLOW\n");  
+        return;  
+    }  
+    else   
+    {  
+        ptr = front;//first node stored in ptr
+        front = front -> next;  //front moves to the next node 
+        free(ptr);  //then free the ptr variable 
+    }  
+}  
+void display()  
+{  
+    struct node *ptr; //calling 
+    ptr = front;//front stored in ptr      
+    if(front == NULL) //for underfloe condition
+    {  
+        printf("\nEmpty queue\n");  
+    }  
+    else  
+    {   printf("\nprinting values .....\n");  
+        while(ptr != NULL) //while ptr or front reaches to last print the elements    
+        {  
+            printf("\n%d\n",ptr -> data);//printing the data stored in ptr variable   
+            ptr = ptr -> next;  //then incrementing the ptr varialble
+        }  
+    }  
+}
