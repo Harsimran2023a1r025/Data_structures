@@ -54,25 +54,26 @@ void push()
     int val;//value to push
     struct node *ptr = (struct node *)malloc(sizeof(struct node));//initializing size for the nodes
     if (ptr == NULL)//null indicates to the last node
-//if ptr collapses with null iut means the linked list is full
+//if ptr collapses with null it means the linked list is full
     {
         printf("overflow");
     }
     else
     {
         printf("Enter the value");
-        scanf("%d", &val);
-        if (head == NULL)
+        scanf("%d", &val);//taking the vlaue to be pushed from the user
+        //this if is only to push the elemnt in first node
+        if (head == NULL)//checking from the starting of the linked list as list is empty first node is linked to the null 
         {
-            ptr->val = val;
-            ptr->next = NULL;
-            head = ptr;
+            ptr->val = val;//in ptr pointer value the entered value is stored 
+            ptr->next = NULL;//in pointer ptr next null value is stored i.e the null value is transfered to the next step
+            head = ptr;//the value of ptr is stored in head 
         }
-        else
+        else//this is to push the elements after the first position
         {
-            ptr->val = val;
-            ptr->next = head;
-            head = ptr;
+            ptr->val = val;//value is stored in ptr val 
+            ptr->next = head;//next of pt stores the head node value 
+            head = ptr;//then again head is linked to the ptr i.e to the first node
         }
         printf("Item pushed");
     }
@@ -80,37 +81,37 @@ void push()
 
 void pop()
 {
-    int item;
-    struct node *ptr;
-    if (head == NULL)
+    int item;//to delete
+    struct node *ptr;//calling the push elemnets in the push function to delete from that struct part
+    if (head == NULL)//if null collapses with the head value it means that the list is empty
     {
         printf("Underflow");
     }
     else
     {
-        item = head->val;
-        ptr = head;
-        head = head->next;
-        free(ptr);
+        item = head->val;//head value i.e start value goes to item
+        ptr = head;//first ele stored in ptr
+        head = head->next;//and head moves to next node 
+        free(ptr);//and than free that first elemnt that stored in ptr
         printf("Item popped");
     }
 }
 void display()
 {
     int i;
-    struct node *ptr;
+    struct node *ptr;//again calling the struct of that baddress in which we've stored the pushed elements 
     ptr = head;
-    if (ptr == NULL)
+    if (ptr == NULL)//underflow condition
     {
         printf("Stack is empty\n");
     }
     else
     {
         printf("Printing Stack elements \n");
-        while (ptr != NULL)
+        while (ptr != NULL)//while iterating ptr moves to the last print the pointer or we said that print the list
         {
-            printf("%d\n", ptr->val);
-            ptr = ptr->next;
+            printf("%d\n", ptr->val);//print thye value stored in ptr variable 
+            ptr = ptr->next;//then it is incrementing i.e ptr next value goes to ptr after every iteration 
         }
     }
 }
