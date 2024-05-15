@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node
+{
+    int priority;//stores the priority of that element   
+    int info;//use to store the data 
+    struct node *link;//the addres part for the next node 
+} NODE;
+
+NODE *front = NULL;//making front value as linked to the null
+
+// insert method
+void insert(int data, int priority)//data to store the value and priority stores the priority of that element 
+{
+    NODE *temp, *q;//creating this variable with node datatype 
+
+    temp = (NODE *)malloc(sizeof(NODE));//initailsing the size of node in temp variable 
+    temp->info = data;//dta stores in temp info 
+    temp->priority = priority;//priority stores in temp pointer
+
+    if (front == NULL || priority < front->priority)//inserting from the starting i.e adding first node 
+    {
+        temp->link = front;//front get linked to gthe first node
+        front = temp;//node is added first
+    }
+    else
+    {
+        q = front;
+        while (q->link!= NULL && q->link->priority <= priority)//while the address of node not reaches to end and also the priority of the elemnt stores in that address is less than or equal to given priority
+            q = q->link;
+        temp->link = q->link;//to arrange the elemnts  on priority basis
+        q->link = temp;
+    }
+}
+
+// delete method
+void del()
+{
+    NODE *temp;
+
+    if (front == NULL)//front coincides with null it means that the list is empty 
+            printf("Queue Underflow\n");
+    else
+    {
+        temp = front;//first node values stores in temp
+        printf("Deleted item is %d\n", temp->info);
+        front = front->link;//replacing the element with the deleted node 
+        free(temp);
+    }
+}
+
+// display method
+void display()
+{
+    NODE *ptr;
+    ptr = front;
+    if (front == NULL)
+        printf("Queue is empty\n");
+    else
+    {
+        printf("Queue is :\n");
+        printf("Priority       Item\n");
+        while (ptr!= NULL)
+        {
+            printf("%d        %d\n", ptr->priority, ptr->info);
+            ptr = ptr->link;
+        }
+    }
+}
+
+// main method
+int main()
+{
+    int choice, data, priority;
+    do
+    {
+        printf("1.Insert\n");
+        printf("2.Delete\n");
+        printf("3.Display\n");
+        printf("4.Quit\n");
+        printf("Enter your choice : ");
+        scanf("%d", &choice);
+        switch (choice)
+        {
+        case 1:
+            printf("Enter the data which is to be added in the queue : ");
+            scanf("%d", &data);
+            printf("Enter its priority : ");
+            scanf("%d", &priority);
+            insert(data, priority);
+            break;
+        case 2:
+            del();
+            break;
+        case 3:
+            display();
+            break;
+        case 4:
+            printf("Exiting\n");
+            break;
+        default:
+            printf("Wrong choice\n");
+        }
+    } while (choice!= 4);
+
+    return 0;
+}
