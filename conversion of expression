@@ -15,14 +15,14 @@ void prefixtoinfix(char source[], char target[]);
 void postfixtoinfix(char source[], char target[]);
 int getpriority(char);
 char infix[100],postfix[100],temp[100],prefix[100];
-void reverse(char str[])
+void reverse(char str[])//reversing the string 
 {
     int len,i=0,j=0;
-    len=strlen(str);
+    len=strlen(str);//lenght of the string
     j=len-1;
-    while(j>=0)
+    while(j>=0)//till j not reaches to 0 i.e if lenght is 5 it starts from the last position
     {
-        if(str[j]=='(')
+        if(str[j]=='(')//revers means if find open brace push the close brace and similar in below case 
         {
             temp[i]=')';
         }
@@ -32,10 +32,10 @@ void reverse(char str[])
         }
         else
         {
-            temp[i]=str[j];
+            temp[i]=str[j];//last elemnt of string is storing at first position in new string
         }
-        i++;
-        j--;
+        i++;//i is incrementing at it is storing the reverse array in sequential order
+        j--;//and j is decrementing as it coming back from the last position
     }
     temp[i]='\0';
 }
@@ -43,26 +43,26 @@ void infixtopostfix(char source[], char target[])
 {
     int i=0,j=0;
     char t;
-    strcpy(target,"");
-    while(source[i]!='\0')
+    strcpy(target,"");//making target array as empty
+    while(source[i]!='\0')//while the given string not gets empty
     {
-        if(source[i]=='(')
+        if(source[i]=='(')//if we find open brace 
         {
-            push(stack, source[i]);
-            i++;
+            push(stack, source[i]);//push that index pos value to stack 
+            i++;//and checks the next pos while incrementing i
         }
-        else if((isdigit(source[i]))||(isalpha(source[i])))
+        else if((isdigit(source[i]))||(isalpha(source[i])))//if we find operand
         {
-            target[j]=source[i];
-            i++;
+            target[j]=source[i];//push that string value to target string
+            i++;//and increment the values
             j++;
         }
         
-        else if(source[i]==')')
+        else if(source[i]==')')//is find closing brace
         {
-            while((top!=-1)&&(stack[top]!='('))
+            while((top!=-1)&&(stack[top]!='('))//till top becomes empty and also till top not reaches to open brace
             {
-                target[j]=pop(stack);
+                target[j]=pop(stack);//pop the elements form the stack and put them in target string 
                 j++;
             }
             if(top==-1)
@@ -70,18 +70,19 @@ void infixtopostfix(char source[], char target[])
                 printf("\nInvalid expression...");
                 
             }
-            t=pop(stack);
+            t=pop(stack);//the remaing elemnets in stack will poped up and store in t
             i++;   
         }
         
-        else if((source[i]=='+')||(source[i]=='-')||(source[i]=='*')||(source[i]=='/')||(source[i]=='%')||(source[i]=='^'))
+        else if((source[i]=='+')||(source[i]=='-')||(source[i]=='*')||(source[i]=='/')||(source[i]=='%')||(source[i]=='^'))//if we find operator 
         {
-            while((top!=-1)&&(stack[top]!='(')&&(getpriority(stack[top])>=getpriority(source[i])))
+            while((top!=-1)&&(stack[top]!='(')&&(getpriority(stack[top])>=getpriority(source[i])))//if stack operator has greater presedence than reading operator 
+            //pop the stack operator and push in target as per the algorithm
             {
                 target[j]=pop(stack);
                 j++;
             }
-            push(stack,source[i]);
+            push(stack,source[i]);//if not simply push reading character to stack
             i++;
 
         }
@@ -94,12 +95,13 @@ void infixtopostfix(char source[], char target[])
     }
     while((top!=-1)&&(stack[top]!='('))
         {
-            target[j]=pop(stack);
+            target[j]=pop(stack);//this is for the remainig elements 
             j++;
         }
         target[j]='\0';
 }
-int getpriority(char o)
+int getpriority(char o)//this is to check the presedence of operatore
+//the greater the return number the higher the presedence
 {
     if(o=='^')
     {
@@ -144,16 +146,16 @@ void prefixtoinfix(char source[], char target[]) {
     int k=0;
     int len=strlen(source);
     char temp[100], s1[100][30];
-    strcpy(target, "");
-    for(i=len-1;i>=0;i--) {
-        if (isalnum(source[i])) {
-            char t[]={source[i],'\0'};
-            strcpy(s1[k++], t);
+    strcpy(target, "");//making string target as empty
+    for(i=len-1;i>=0;i--) {//taking it from right to left as per the algorithm
+        if (isalnum(source[i])) {//if operand 
+            char t[]={source[i],'\0'};//string t stores the reading character value
+            strcpy(s1[k++], t);//in 2d array store that t value
             
-        } else {
+        } else {//if we find operator pop the last 2 operands from the s1 2d array as per the algorithm 
             char *op1 = s1[--k]; // First operand
             char *op2 = s1[--k]; // Second operand
-            sprintf(temp, "(%s%c%s)", op1, source[i], op2); // Create infix expression
+            sprintf(temp, "(%s%c%s)", op1, source[i], op2); // Create infix expression 
             strcpy(s1[k++], temp); // Push the infix expression onto stack
             
         }
@@ -167,11 +169,11 @@ void postfixtoinfix(char source[], char target[]) {
     int len=strlen(source);
     char temp[100],s1[100][30];
     strcpy(target, "");
-    for(i=0;i<=len-1;i++) {
+    for(i=0;i<=len-1;i++) {//from left to right as per algorithm
         if (isalnum(source[i])) {
             char t[]={source[i],'\0'};
             strcpy(s1[k++], t);
-        } else {
+        } else {//
             char *op2 = s1[--k]; // Second operand
             char *op1 = s1[--k]; // First operand
             sprintf(temp, "(%s%c%s)", op1, source[i], op2); // Create infix expression
