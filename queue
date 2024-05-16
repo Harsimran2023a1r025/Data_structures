@@ -1,0 +1,64 @@
+//6th manual program enqueue and dequeue
+
+#include <stdio.h>
+void enqueue(int);
+int dequeue();
+void displayQueue();
+int queue[100],max,i,rear=-1,front=-1,choice;
+void enqueue(int number) {
+    if (rear == max - 1) {//from rear we add elements after adding every element the rear also moves forward from one index pos to other
+        printf("Overflow: Queue is full.\n");
+    } else {
+        rear++;//increment rear position from -1 to 0
+        queue[rear] = number;//and adding element to that rear position
+    }
+
+}
+
+int dequeue() {
+    if (front == rear) {//if front adn rear coincide i.e they are at starting it means that array is empty
+        printf("Underflow: Queue is empty.\n");
+        return -1; 
+    } else {
+        front++;//front incremnet till the value you want to delete and we ptint the array from front to rear after deque
+        return queue[front];
+    }
+}
+
+void displayQueue() {
+    if (front == rear) {
+        printf("Queue is empty.\n");
+    } else {
+        printf("Elements in the queue are: ");
+        for (int i = front + 1; i <= rear; i++) {//as front value is -1 so to make it with regular with the index positions front +1 is used
+            printf("%d ", queue[i]);
+        }
+        printf("\n");
+    }
+}
+int main()
+{
+    int num;
+    printf("\nEnter no of elements into Queue: ");//size of array
+    scanf("%d",&max);
+    
+    for (int i = 0; i < max; i++) {//
+        printf("Enter element %d to enqueue: ", i + 1);//adding elemnets to their respective positions 
+        scanf("%d", &num);
+        enqueue(num);//then calling the fuction to enque the num value in queue 
+    }
+    displayQueue();
+    
+    int del;
+    printf("Enter no of elements to dequeue: ");
+    scanf("%d",&del);
+    for (int i = 0; i <del; i++) {//like we have to delete 2 elements i.e 0 and 1 index pos 
+        int deleted = dequeue();//that 2 positions is stored in deleted variable 
+        if (deleted != -1) {//if the queue is not empty then it print 
+            printf("Removed element from the queue: %d\n", deleted);
+        }
+    }
+    displayQueue();
+    
+
+}
