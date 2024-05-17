@@ -2,41 +2,41 @@
 #include <stdlib.h>
 
 // Define the structure for a node
-struct Node {
+struct Node {//in node datatype we have created 2 divison one for data part and other for the address of next node
     int data;
-    struct Node* next;//stores next variable in struct node datatype
+    struct Node* next;//stores next variable address in struct node datatype
 };
 
 // Function to create a new node
-struct Node* createNode(int data) {
-    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
-    newNode->data = data;
-    newNode->next = NULL;
+struct Node* createNode(int data) {//inside that struct datatype a function is created
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));//initializing the size of node that is stored in newnode pointer variable
+    newNode->data = data;//in data part of the node value is storing
+    newNode->next = NULL;//and in address part we are liking that to null as list is ending
     return newNode;
 }
 
 // Function to insert a new node at the beginning
 struct Node* insertAtBeginning(struct Node* head, int data) {
-    struct Node* newNode = createNode(data);
-    newNode->next = head;
-    head = newNode;
+    struct Node* newNode = createNode(data);//in newnode pointer variable that created  node is storing 
+    newNode->next = head;//head is replacing the first node as linked list first element is connected to head
+    head = newNode;//and the value of created node that we have stored in newnode gets link to the head
     return head;
 }
 
 // Function to insert a new node at the end
 struct Node* insertAtEnd(struct Node* head, int data) {
-    struct Node* newNode = createNode(data);
-    if (head == NULL) {
+    struct Node* newNode = createNode(data);//the node created is stored in newnode variable 
+    if (head == NULL) {//if the list is empty you want to insert at last so it is similar to insert at begining 
         head = newNode;
         return head;
     }
 
-    struct Node* temp = head;
-    while (temp->next!= NULL) {
-        temp = temp->next;
+    struct Node* temp = head;//head value storer in temp variable 
+    while (temp->next!= NULL) {//till we reach to the last node 
+        temp = temp->next;//the nodes are shifted one step before till the last pos gets empty
     }
 
-    temp->next = newNode;
+    temp->next = newNode;//then the value you want to insert will be stored at last pos1
     return head;
 }
 
@@ -46,18 +46,18 @@ struct Node* deleteNode(struct Node* head, int key) {
         return head;
     }
 
-    if (head->data == key) {
-        struct Node* temp = head;
-        head = head->next;
-        free(temp);
+    if (head->data == key) {//if want to delete first node ,key is the ele you want to delete 
+        struct Node* temp = head;//the 1st node is stored in temp variable
+        head = head->next;//next value is shifted to one step back
+        free(temp);//free the first node that we have stored in emp variable
         return head;
     }
 
     struct Node* temp = head;
-    while (temp->next!= NULL) {
-        if (temp->next->data == key) {
-            struct Node* delNode = temp->next;
-            temp->next = delNode->next;
+    while (temp->next!= NULL) {//iterate through every position till the pos you want to delete 
+        if (temp->next->data == key) {//if the entered ele meet the pos you want to delete  
+            struct Node* delNode = temp->next;//in delnode variable store that node
+            temp->next = delNode->next;//in that deleted position shift the next ele to that pos
             free(delNode);
             return head;
         }
@@ -72,8 +72,8 @@ int searchNode(struct Node* head, int key) {
     struct Node* temp = head;
     int index = 0;
     while (temp!= NULL) {
-        if (temp->data == key) {
-            return index;
+        if (temp->data == key) {//if entered element is found
+            return index;//return the element index pos
         }
         index++;
         temp = temp->next;
@@ -84,9 +84,9 @@ int searchNode(struct Node* head, int key) {
 // Function to display the linked list
 void display(struct Node* head) {
     struct Node* temp = head;
-    while (temp!= NULL) {
+    while (temp!= NULL) {//from head value till the list reaches to null
         printf("%d -> ", temp->data);
-        temp = temp->next;
+        temp = temp->next;//incrementing
     }
     printf("NULL\n");
 }
