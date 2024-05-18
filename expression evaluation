@@ -54,7 +54,7 @@ int main()
     }
     return 0;
 }
-int getpriority(char o)
+int getpriority(char o)//the greater the return value the higher the presedence of operator
 {
     if(o=='^')
     {
@@ -73,19 +73,19 @@ float prefix_evaluation(char exp[])
 {
     int i=0;
     int len=strlen(exp);
-    float op1,op2,value;
-    for(i=len-1;i>=0;i--)
+    float op1,op2,value;//op1 and op2 is for the operands 
+    for(i=len-1;i>=0;i--)//in prefix evaluation reight to left
     {
-        if((isdigit(exp[i]))||(isalpha(exp[i])))
+        if((isdigit(exp[i]))||(isalpha(exp[i])))//if we find operand 
         {
-            push(stack,(float)(exp[i]-'0'));
+            push(stack,(float)(exp[i]-'0'));//push that expression value to the stack 
         }
         else{
-            op1=pop(stack);
+            op1=pop(stack);//else if we find the operator pop last 2 operands from the stack and perform calculation
             op2=pop(stack);
             switch(exp[i])
             {
-                case '+':
+                case '+'://cases for what typeof operator we have to do what type of operation
                     value=op1+op2;
                     break;
                 case '-':
@@ -98,32 +98,32 @@ float prefix_evaluation(char exp[])
                     value=op1/op2;
                     break;
                 case '%':
-                    value=(int)op1%(int)op2;
+                    value=(int)op1%(int)op2;//as modulus function works only for integers so if we put float it calculate the approx value of that float as integer 
                     break;
                 default:
                     printf("invalid...");
 
             }
-            push(stack,value);
+            push(stack,value);//then the calculated value store in the stack by push operation that is an another operand 
         }
         
     }
-    return (pop(stack));
+    return (pop(stack));//return the calculated value of the expression
 }
 float postfix_evaluation(char exp[])
 {
     int i=0;
     int len=strlen(exp);
-    float op1,op2,value;
+    float op1,op2,value;//for postfix expression goes from left to right 
     for(i=0;i<=len-1;i++)
     {
-        if((isdigit(exp[i]))||(isalpha(exp[i])))
+        if((isdigit(exp[i]))||(isalpha(exp[i])))//again similar to prefix exp
         {
             push(stack,(float)(exp[i]-'0'));
         }
         else{
             op2=pop(stack);
-            op1=pop(stack);
+            op1=pop(stack);//pop last 2 operand from stack and store in op1 and op2 
             switch(exp[i])
             {
                 case '+':
@@ -145,7 +145,7 @@ float postfix_evaluation(char exp[])
                     printf("invalid...");
 
             }
-            push(stack,value);
+            push(stack,value);//all steps are similar to that of prefix 
         }
         
     }
@@ -170,28 +170,28 @@ float pop(float stack[]) {
         return val;
     }
 }
-float infix_evaluation(char exp[])
+float infix_evaluation(char exp[])//infix evaluation
 {
 	int i;
     
-	for(i=0; exp[i]!='\0'; i++){
-		if((isdigit(exp[i]))||(isalpha(exp[i])))
-			operand[++top1]=(int)(exp[i]-'0');
-		else if(exp[i]=='('){
-			opr[++top2]=exp[i];
+	for(i=0; exp[i]!='\0'; i++){//from left to right till expression gets empty
+		if((isdigit(exp[i]))||(isalpha(exp[i])))//if find operand 
+			operand[++top1]=(int)(exp[i]-'0');//store the operand value in operand array
+		else if(exp[i]=='('){//if find open brace 
+			opr[++top2]=exp[i];//store it in operator stack
 		}
-		else if(exp[i]==')'){
-			while(opr[top2]!='('){
-				Process();
+		else if(exp[i]==')'){//if closing brace
+			while(opr[top2]!='('){//till we reach the open brace in operator stack
+				Process();//call the process func in which delete last 2 operands and perform calculation on those two operands 
 			}
-			top2--;
+			top2--;//to discard the closing brace 
 		}
-		else if(exp[i]=='+' || exp[i]=='-' || exp[i]=='*' || exp[i]=='/'||exp[i]=='%'|| exp[i]=='^')
+		else if(exp[i]=='+' || exp[i]=='-' || exp[i]=='*' || exp[i]=='/'||exp[i]=='%'|| exp[i]=='^')//if find operator 
 		{
-			while(top2!=-1 && getpriority(exp[i])<=getpriority(opr[top2])){
+			while(top2!=-1 && getpriority(exp[i])<=getpriority(opr[top2])){//tilll stack gets empty and also presedence of reading char is less than or equal to opr in opr stack call process func
 				Process();
 			}
-			opr[++top2]=exp[i];
+			opr[++top2]=exp[i];//if presedence is greter thean simply add the operator in opr stack 
 		}
 	}
 	while(top2 !=-1){
@@ -200,11 +200,11 @@ float infix_evaluation(char exp[])
 	return operand[top1--];
 }
 void Process(){
-	int op1 = operand[top1--];
-	int op2 = operand[top1--];
-	char op=opr[top2--];
+	int op1 = operand[top1--];//removing the last added operand from stack and stroing it in op1
+	int op2 = operand[top1--];//similarly like above op1 
+	char op=opr[top2--];//taking the last operator added to opr stack 
 	int value=0;
-	switch(op){
+	switch(op){//performing the calculation on both operands with the last operator added to opr stack 
 		case '+':
 			value=op1+op2;
 			break;
