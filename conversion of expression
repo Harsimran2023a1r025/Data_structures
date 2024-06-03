@@ -155,7 +155,7 @@ void prefixtoinfix(char source[], char target[]) {
         } else {//if we find operator pop the last 2 operands from the s1 2d array as per the algorithm 
             char *op1 = s1[--k]; // First operand
             char *op2 = s1[--k]; // Second operand
-            sprintf(temp, "(%s%c%s)", op1, source[i], op2); // Create infix expression 
+            sprintf(temp, "(%s%c%s)", op1, source[i], op2); // Create a string and push back it to stack taht is another opernad now
             strcpy(s1[k++], temp); // Push the infix expression onto stack
             
         }
